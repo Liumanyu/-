@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Echarts</title>
+</head>
+<body>
+	<div id="main" style="height:400px"></div>
+	<!--Echarts单文件引入-->
+	<script src="./build/dist/echarts.js"></script>
+
+	<script type="text/javascript">
+	//路径配置，从当前页面连接到echarts.js，定义所需的图表路径
+	require.config({
+		paths:{
+			echarts:'./build/dist'
+		}
+	});
+
+
+	//使用
+	require(
+		[
+			'echarts',
+			'echarts/chart/pie'      //数组中是要加载的echarts模块
+		],
+		function (ec){
+			//基于准备好的dom，初始化echarts图表
+			var myChart = ec.init(document.getElementById('main'));
+
+			var option = {
+			    title : {
+			        text: '前端监控性能平台',
+			        subtext: '模板',
+			        x:'center'
+			    },
+			    //提示框，鼠标悬浮交互时的信息提示
+			    tooltip : {										//处触发类型
+			        trigger: 'item',
+			        formatter: "{a} <br/>{b} : {c} ({d}%)"   //内容格式器
+			    },
+			    //图例
+			    legend: {
+			        orient : 'vertical',
+			        x : 'left',
+			        data:['白屏时间','首屏时间','用户可操作','总下载时间','网络耗时统计']
+			    },
+			    //工具箱
+			    toolbox: {
+			        show : true,
+			        feature : {
+			            mark : {show: true},
+			            dataView : {show: true, readOnly: false},
+			            magicType : {
+			                show: true, 
+			                type: ['pie', 'funnel'],
+			                option: {
+			                    funnel: {
+			                        x: '25%',
+			                        width: '50%',
+			                        funnelAlign: 'left',
+			                        max: 1548
+			                    }
+			                }
+			            },
+			            restore : {show: true},
+			            saveAsImage : {show: true}
+			        }
+			    },
+			    //是否启用拖拽重计算特性，默认关闭false
+			    calculable : true,
+			    //驱动图表生成的数据内容数组，数组中每一项为一个系列的选项及数据
+			    series : [
+			        {
+			            name:'统计',
+			            type:'pie',
+			            radius : '55%',
+			            center: ['50%', '60%'],
+			            data:[
+			                {value:335, name:'白屏时间'},
+			                {value:310, name:'首屏时间'},
+			                {value:234, name:'用户可操作'},
+			                {value:135, name:'总下载时间'},
+			                {value:1548, name:'网络耗时统计'}
+			            ]
+			        }
+			    ]
+			};
+
+			//为echarts对象加载数据
+			myChart.setOption(option);
+		}
+
+		);
+
+	</script>
+</body>
+</html>
